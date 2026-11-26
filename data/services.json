@@ -1,0 +1,39 @@
+
+[
+  {
+    "name": "Basic Car Wash",
+    "description": "Exterior hand wash with gentle shampoo and clean water.",
+    "price": 300,
+    "duration": 30,
+    "category": "Exterior",
+    "image": "/services/basic-wash.jpg",
+    "isActive": true
+  },
+  {
+    "name": "Premium Car Wash",
+    "description": "Complete exterior wash with interior vacuum cleaning.",
+    "price": 700,
+    "duration": 60,
+    "category": "Premium",
+    "image": "/services/premium-wash.jpg",
+    "isActive": true
+  },
+  {
+    "name": "Interior Cleaning",
+    "description": "Deep interior cleaning with vacuum and dashboard polishing.",
+    "price": 500,
+    "duration": 45,
+    "category": "Interior",
+    "image": "/services/interior-cleaning.jpg",
+    "isActive": true
+  },
+  {
+    "name": "Engine Bay Cleaning",
+    "description": "Careful cleaning of the engine bay to remove dirt and grease.",
+    "price": 800,
+    "duration": 40,
+    "category": "Special",
+    "image": "/services/engine-cleaning.jpg",
+    "isActive": true
+  }
+]
