@@ -1,34 +1,40 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const { connectDB } = require("./config/db");
-const serviceRouter = require("./routes/service.routers");
-const { seedServices } = require("./utils/seedServices");
-const app = express();
-const port = process.env.PORT || 5000;
+require('dotenv').config()
+const express =require("express")
+const cors =require("cors")
+const {  connectDB } = require('./config/db')
 
-//middleware
-app.use(cors());
-app.use(express.json());
-app.use("/services", serviceRouter);
 
-//Home Route
-app.get("/", (req, res) => {
+const { seedServices } = require('./utils/seedServices')
+const { serviceRouter } = require('./routes/service.routers')
+const app = express ()
+const port = process.env.PORT||5000
+//middlewase
+app.use(cors())
+app.use(express.json())
+app.use('/service',serviceRouter)
+
+
+//home
+app.get('/',async(req,res)=>{
   res.send({
-    success: true,
-    message: "Car Wash Server is Running!!",
-  });
-});
-const startServer = async () => {
-  try {
-    const db = await connectDB();
-    app.locals.db = db;
-    await seedServices(db);
-    app.listen(port, () => {
-      console.log(`Car wash server running on the port ${port}`);
-    });
-  } catch (error) {
-    console.error("Server stratUp failed:", error);
+    success:true,
+    message:"Server successfully running"
+  })
+})
+const stratServer=async()=>{
+  try{
+    const db = await connectDB()
+    app.locals.db=db
+    await seedServices(db)
+    app.listen(port,()=>{
+      console.log("server successfull connected")
+    })
+
+  }catch(error){
+    console.error("Failed to setup Server",error)
+  
   }
-};
-startServer();
+}
+stratServer(
+
+)

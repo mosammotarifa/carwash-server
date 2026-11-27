@@ -1,4 +1,6 @@
-const getServiceCollection= async(db)=>{
+const getServiceCollection= (db)=>{
     return db.collection('services')
 }
+ 
+
 module.exports={getServiceCollection}

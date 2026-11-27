@@ -1,8 +1,63 @@
-### My Car Wash Backend Project Structure
+# Car Wash Backend
 
-I have organized my Car Wash backend project using a modular and maintainable folder structure with Express.js and MongoDB. First, I created the `config` folder and added `db.js` to handle the MongoDB database connection. I also created the main `index.js` file to initialize the Express server, configure middleware such as CORS and `express.json()`, register API routes, and start the server. Along with these, I added `.env` to store environment variables securely, `.gitignore` to exclude unnecessary files from Git, and the required Node.js project files, including `package.json`, `package-lock.json`, and `node_modules`.
+## Project Overview
 
-To keep the backend code organized, I created separate folders for `controllers`, `data`, `middlewares`, `models`, `routes`, and `utils`. Inside the `data` folder, I added `services.json`, which contains the initial car wash service data. In the `models` folder, I created `service.models.js` to access and manage the MongoDB `services` collection. In the `controllers` folder, I created `service.controllers.js` to handle service-related requests and implement the business logic, such as retrieving all services from the database. Next, I created `service.routers.js` inside the `routes` folder to define the service API endpoints and connected this router to `index.js`.
+A Car Wash Booking Backend built with Node.js, Express.js, and MongoDB. The project follows a modular folder structure to keep the code organized, maintainable, and scalable.
 
- I created `seedServices.js` inside the `utils` folder to insert the initial service data from `services.json` into MongoDB. I imported the seeding function into `index.js` and executed it after successfully connecting to the database. I used `app.locals.db` to share the connected database instance with the route handlers and controllers without creating a new database connection for every request. After completing these steps, my MongoDB connection, initial data seeding, Express server, and service API endpoints were all working successfully.
- 
+## Project Setup & Foundation
+
+- Set up an Express.js server.
+- Configured MongoDB connection using `config/db.js`.
+- Configured CORS and `express.json()` middleware.
+- Used `.env` for environment variables and `.gitignore` for Git exclusions.
+- Organized the project into `config`, `controllers`, `data`, `middlewares`, `models`, `routes`, and `utils` folders.
+- Created `services.json` for initial service data.
+- Implemented database seeding using `seedServices.js`.
+- Used `app.locals.db` to share the database connection across the application.
+
+## Service API Development
+
+### Completed
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/service` | Get all services |
+| GET | `/service/:id` | Get a single service by ID |
+| POST | `/service` | Create a new service |
+
+### Upcoming
+
+| Method | Endpoint | Description |
+|---|---|---|
+| PATCH | `/service/:id` | Update an existing service |
+| DELETE | `/service/:id` | Delete a service |
+
+## Backend Development Roadmap
+
+- [x] Project setup and MongoDB connection
+- [x] Initial service data seeding
+- [x] Get all services
+- [x] Get service by ID
+- [x] Create a new service
+- [ ] Complete Service CRUD operations
+- [ ] Implement input validation
+- [ ] Implement error handling
+- [ ] Develop Booking API
+- [ ] Implement user registration and login
+- [ ] Configure JWT authentication
+- [ ] Implement protected routes and role-based authorization
+- [ ] Add search, filtering, and pagination
+- [ ] Implement booking history
+- [ ] Test APIs using Postman
+- [ ] Configure production environment
+- [ ] Deploy backend
+- [ ] Connect frontend
+
+## Technologies Used
+
+- Node.js
+- Express.js
+- MongoDB
+- JavaScript
+- dotenv
+- CORS
