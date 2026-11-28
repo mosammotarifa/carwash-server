@@ -13,6 +13,8 @@ A Car Wash Booking Backend built with **Node.js, Express.js, and MongoDB**. The 
 - dotenv
 - CORS
 - express-validator
+- bcryptjs
+- jsonwebtoken
 - Postman
 
 ## Project Structure
@@ -25,7 +27,8 @@ car-wash-backend/
 │
 ├── controllers/
 │   ├── service.controllers.js
-│   └── booking.controllers.js
+│   ├── booking.controllers.js
+│   └── user.controllers.js
 │
 ├── data/
 │   └── services.json
@@ -33,15 +36,18 @@ car-wash-backend/
 ├── middlewares/
 │   ├── service.validation.js
 │   ├── booking.validation.js
+│   ├── auth.middleware.js
 │   └── error.middleware.js
 │
 ├── models/
 │   ├── service.models.js
-│   └── booking.models.js
+│   ├── booking.models.js
+│   └── user.models.js
 │
 ├── routes/
 │   ├── service.routers.js
-│   └── booking.routes.js
+│   ├── booking.routes.js
+│   └── user.router.js
 │
 ├── utils/
 │   └── seedServices.js
@@ -69,13 +75,13 @@ car-wash-backend/
 
 ### Service CRUD Operations
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/service` | Retrieve all services |
-| GET | `/service/:id` | Retrieve a single service by ID |
-| POST | `/service` | Create a new service |
-| PATCH | `/service/:id` | Update an existing service |
-| DELETE | `/service/:id` | Delete a service |
+| Method | Endpoint       | Description                     |
+| ------ | -------------- | ------------------------------- |
+| GET    | `/service`     | Retrieve all services           |
+| GET    | `/service/:id` | Retrieve a single service by ID |
+| POST   | `/service`     | Create a new service            |
+| PATCH  | `/service/:id` | Update an existing service      |
+| DELETE | `/service/:id` | Delete a service                |
 
 ### Service API Features
 
@@ -97,13 +103,13 @@ car-wash-backend/
 
 ### Booking CRUD Operations
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/booking` | Create a new booking |
-| GET | `/booking` | Retrieve all bookings |
-| GET | `/booking/:id` | Retrieve a single booking by ID |
-| PATCH | `/booking/:id` | Update an existing booking |
-| DELETE | `/booking/:id` | Delete a booking |
+| Method | Endpoint       | Description                                                |
+| ------ | -------------- | ---------------------------------------------------------- |
+| POST   | `/booking`     | Create a new booking                                       |
+| GET    | `/booking`     | Retrieve the logged-in user's bookings                     |
+| GET    | `/booking/:id` | Retrieve an individual booking owned by the logged-in user |
+| PATCH  | `/booking/:id` | Update a booking owned by the logged-in user               |
+| DELETE | `/booking/:id` | Delete a booking owned by the logged-in user               |
 
 ### Booking API Features
 
@@ -119,7 +125,39 @@ car-wash-backend/
 - [x] Added validation for booking updates.
 - [x] Added validation error responses.
 - [x] Prevented empty booking update requests.
-- [x] Tested all five Booking CRUD endpoints using Postman.
+- [x] Protected booking routes using JWT authentication.
+- [x] Automatically assigned the authenticated user's ID when creating a booking.
+- [x] Filtered booking list results using the authenticated user's ID.
+- [x] Restricted individual booking retrieval to the booking owner.
+- [x] Restricted booking updates to the booking owner.
+- [x] Prevented users from changing the booking's `userId` during updates.
+- [x] Restricted booking deletion to the booking owner.
+
+## User Authentication & Authorization
+
+### User Authentication Features
+
+- [x] Created a separate user model.
+- [x] Created user controllers.
+- [x] Organized user routes using Express Router.
+- [x] Implemented user registration.
+- [x] Implemented user login.
+- [x] Checked for existing users during registration.
+- [x] Used `bcryptjs` to hash passwords.
+- [x] Used `bcrypt.compare()` to verify passwords during login.
+- [x] Configured JWT authentication using `jsonwebtoken`.
+- [x] Stored JWT secret in environment variables.
+- [x] Generated JWT tokens after successful login.
+- [x] Created authentication middleware to verify JWT tokens.
+- [x] Extracted authenticated user information from the JWT.
+- [x] Protected booking routes using authentication middleware.
+
+### User API Endpoints
+
+| Method | Endpoint          | Description             |
+| ------ | ----------------- | ----------------------- |
+| POST   | `/users/register` | Register a new user     |
+| POST   | `/users/login`    | Log in an existing user |
 
 ## API Testing
 
@@ -149,6 +187,20 @@ car-wash-backend/
 - [x] Tested empty Service update requests.
 - [x] Tested centralized error-handling responses.
 
+### Authentication Testing
+
+- [x] Tested user registration.
+- [x] Tested user login.
+- [x] Tested password hashing.
+- [x] Tested JWT token generation.
+- [x] Tested protected routes without an Authorization header.
+- [x] Tested protected routes with a valid Bearer token.
+- [x] Verified that unauthenticated requests receive a 401 response.
+- [ ] Tested booking ownership using two different users.
+- [ ] Tested that one user cannot retrieve another user's booking.
+- [ ] Tested that one user cannot update another user's booking.
+- [ ] Tested that one user cannot delete another user's booking.
+
 ## Backend Development Roadmap
 
 ### Completed Implementation
@@ -158,39 +210,47 @@ car-wash-backend/
 - [x] Service CRUD API.
 - [x] Service input validation.
 - [x] Centralized error-handling middleware.
-- [x] Connected Service CRUD controllers to centralized error handling.
 - [x] Booking CRUD API implementation.
 - [x] Booking input validation.
-- [x] Booking creation and update validation.
 - [x] Postman testing of all Service CRUD endpoints.
 - [x] Postman testing of all Booking CRUD endpoints.
 - [x] Invalid ID and missing-record testing.
 - [x] Service and Booking validation testing.
-- [x] Centralized error-handling testing.
+- [x] User registration and login.
+- [x] Password hashing using bcryptjs.
+- [x] JWT token generation and verification.
+- [x] Authentication middleware.
+- [x] Protected booking routes.
+- [x] Automatic user ID assignment during booking creation.
+- [x] User-specific booking list retrieval.
+- [x] Booking ownership checks for retrieving individual bookings.
+- [x] Booking ownership checks for updating bookings.
+- [x] Booking ownership checks for deleting bookings.
+- [x] Prevented modification of booking ownership through update requests.
 
 ### Pending Tasks
 
-- [ ] Review and improve error handling.
-- [ ] Implement user registration and login.
-- [ ] Configure password hashing.
-- [ ] Configure JWT authentication.
-- [ ] Implement protected routes.
+- [ ] Complete booking ownership testing with two different users.
 - [ ] Implement role-based authorization.
 - [ ] Add search, filtering, and pagination.
-- [ ] Implement booking history.
 - [ ] Complete comprehensive API testing.
+- [ ] Review and improve error handling.
 - [ ] Configure production environment.
 - [ ] Deploy backend.
 - [ ] Connect frontend.
 
 ## Current Progress
 
-The project foundation, Service CRUD API, and Booking CRUD API have been implemented using Express.js and MongoDB.
+The project foundation, Service CRUD API, Booking CRUD API, and user authentication system have been implemented using Express.js and MongoDB.
 
 Service and Booking input validation is implemented using `express-validator`. MongoDB ObjectId validation is also implemented for ID-based operations.
 
 Centralized error-handling middleware is configured to handle errors passed through `next(error)`.
 
-All ten CRUD endpoints have been successfully tested using Postman. Invalid ID and missing-record responses have also been tested. Service and Booking validation errors, empty update requests, and centralized error handling have been tested successfully.
+User registration and login are implemented with password hashing using `bcryptjs`. JWT authentication is configured using `jsonwebtoken`, and protected booking routes verify the user's token before allowing access.
 
-**Next Development Phase:** Start implementing user registration and login, followed by password hashing and JWT authentication.
+New bookings are automatically associated with the authenticated user's ID. Users can retrieve their own bookings, and ownership checks are implemented for individual booking retrieval, updates, and deletion.
+
+Users are also prevented from changing booking ownership through update requests.
+
+**Next Development Phase:** Test booking ownership and authorization using two different users in Postman.

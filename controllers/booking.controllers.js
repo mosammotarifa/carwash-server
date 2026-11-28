@@ -5,7 +5,10 @@ const createBooking = async (req, res, next) => {
   try {
     const db = req.app.locals.db;
     const bookingCollection = getBookingCollection(db);
-    const bookingData = req.body;
+    const bookingData = {
+      ...req.body,
+      userId: req.user.userId,
+    };
     const result = await bookingCollection.insertOne(bookingData);
     res.status(201).send({
       success: true,
@@ -21,7 +24,9 @@ const getAllBookings = async (req, res, next) => {
     const db = req.app.locals.db;
     const bookingCollection = getBookingCollection(db);
 
-    const result = await bookingCollection.find().toArray();
+    const result = await bookingCollection
+      .find({ userId: req.user.userId })
+      .toArray();
     res.status(200).send({
       success: true,
       message: "Get all Booking",
@@ -42,7 +47,10 @@ const getAllBookingById = async (req, res, next) => {
         message: "Invalid booking ID",
       });
     }
-    const result = await bookingCollection.findOne({ _id: new ObjectId(id) });
+    const result = await bookingCollection.findOne({
+      _id: new ObjectId(id),
+      userId: req.user.userId,
+    });
     if (!result) {
       return res.status(404).send({
         success: false,
@@ -62,7 +70,7 @@ const updateBooking = async (req, res, next) => {
   try {
     const db = req.app.locals.db;
     const bookingCollection = getBookingCollection(db);
-    const bookingData = req.body;
+    const { userId, ...bookingData } = req.body;
     const id = req.params.id;
     if (!ObjectId.isValid(id)) {
       return res.status(400).send({
@@ -71,7 +79,10 @@ const updateBooking = async (req, res, next) => {
       });
     }
     const result = await bookingCollection.updateOne(
-      { _id: new ObjectId(id) },
+      {
+        _id: new ObjectId(id),
+        userId: req.user.userId,
+      },
       { $set: bookingData },
     );
     if (result.matchedCount === 0) {
@@ -100,7 +111,10 @@ const deletedBooking = async (req, res, next) => {
         message: "Invalid booking ID",
       });
     }
-    const result = await bookingCollection.deleteOne({ _id: new ObjectId(id) });
+    const result = await bookingCollection.deleteOne({
+      _id: new ObjectId(id),
+      userId: req.user.userId,
+    });
     if (result.deletedCount === 0) {
       return res.status(404).send({
         success: false,
