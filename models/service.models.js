@@ -1,6 +1,7 @@
-const getServiceCollection= (db)=>{
-    return db.collection('services')
-}
- 
+const getServiceCollection = (db) => {
+  return db.collection("services");
+};
+module.exports = { getServiceCollection };
 
-module.exports={getServiceCollection}
+
+

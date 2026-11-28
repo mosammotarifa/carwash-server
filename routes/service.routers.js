@@ -1,9 +1,10 @@
 const express=require('express')
 const { getAllServices, getServiceById, createService, updateService, deleteService } = require('../controllers/service.controllers')
+const { validateService, validateUpdateService } = require('../middlewares/service.validation')
 const serviceRouter= express.Router()
 serviceRouter.get('/',getAllServices)
 serviceRouter.get('/:id',getServiceById)
-serviceRouter.post('/',createService)
-serviceRouter.patch('/:id',updateService)
+serviceRouter.post('/',validateService,createService)
+serviceRouter.patch('/:id',validateUpdateService,updateService)
 serviceRouter.delete('/:id',deleteService)
 module.exports={serviceRouter}

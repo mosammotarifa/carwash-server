@@ -1,0 +1,10 @@
+const express= require ("express")
+const { createBooking, getAllBookings, getAllBookingById, updateBooking, deletedBooking } = require("../controllers/booking.controllers")
+const { validateBooking, validateUpdateBooking } = require("../middlewares/booking.validation")
+const bookingRouter= express.Router()
+bookingRouter.post('/',validateBooking,createBooking)
+bookingRouter.get('/',getAllBookings)
+bookingRouter.get('/:id',getAllBookingById)
+bookingRouter.patch('/:id',validateUpdateBooking,updateBooking)
+bookingRouter.delete('/:id',deletedBooking)
+module.exports={bookingRouter}

@@ -6,12 +6,18 @@ const {  connectDB } = require('./config/db')
 
 const { seedServices } = require('./utils/seedServices')
 const { serviceRouter } = require('./routes/service.routers')
+const { errorHandler } = require('./middlewares/error.middleware')
+const { bookingRouter } = require('./routes/booking.routes')
+const { userRouter } = require('./routes/user.router')
 const app = express ()
 const port = process.env.PORT||5000
 //middlewase
 app.use(cors())
 app.use(express.json())
+//routes
 app.use('/service',serviceRouter)
+app.use('/booking',bookingRouter)
+app.use('/users',userRouter)
 
 
 //home
@@ -21,7 +27,10 @@ app.get('/',async(req,res)=>{
     message:"Server successfully running"
   })
 })
-const stratServer=async()=>{
+//centralized error handler(always after router)
+app.use(errorHandler)
+//startServer
+const startServer=async()=>{
   try{
     const db = await connectDB()
     app.locals.db=db
@@ -35,6 +44,4 @@ const stratServer=async()=>{
   
   }
 }
-stratServer(
-
-)
+startServer()
