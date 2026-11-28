@@ -6,6 +6,8 @@ const {
   getAllBookingById,
   updateBooking,
   deletedBooking,
+  getBookingStats,
+  getServiceBookingStats,
 } = require("../controllers/booking.controllers");
 const {
   validateBooking,
@@ -14,6 +16,8 @@ const {
 const bookingRouter = express.Router();
 bookingRouter.post("/", verifyToken, validateBooking, createBooking);
 bookingRouter.get("/", verifyToken, getAllBookings);
+bookingRouter.get("/stats", verifyToken, getBookingStats);
+bookingRouter.get("/service-stats", verifyToken, getServiceBookingStats);
 bookingRouter.get("/:id", verifyToken, getAllBookingById);
 bookingRouter.patch("/:id", verifyToken, validateUpdateBooking, updateBooking);
 bookingRouter.delete("/:id", verifyToken, deletedBooking);

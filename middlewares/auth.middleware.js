@@ -25,5 +25,17 @@ const verifyToken = (req, res, next) => {
     });
   }
 };
+const verifyRole = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).send({
+        success: false,
+        message: "Access forbidden. You don't have permission.",
+      });
+    }
 
-module.exports = { verifyToken };
+    next();
+  };
+};
+
+module.exports = { verifyToken,verifyRole };

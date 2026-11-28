@@ -4,12 +4,42 @@ const { getServiceCollection } = require("../models/service.models");
 const getAllServices = async (req, res, next) => {
   try {
     const db = req.app.locals.db;
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
     const ServiceCollection = getServiceCollection(db);
-    // throw new Error("Testing centralized error handler");
-    const services = await ServiceCollection.find().toArray();
+
+    const search = req.query.search;
+    const minPrice = Number(req.query.minPrice);
+    const maxPrice = Number(req.query.maxPrice);
+
+    const filter = {
+      ...(search && {
+        name: { $regex: search, $options: "i" },
+      }),
+      ...(req.query.minPrice || req.query.maxPrice
+        ? {
+            price: {
+              ...(req.query.minPrice && { $gte: minPrice }),
+              ...(req.query.maxPrice && { $lte: maxPrice }),
+            },
+          }
+        : {}),
+    };
+    const totalServices = await ServiceCollection.countDocuments(filter);
+    const totalPages = Math.ceil(totalServices / limit);
+    const services = await ServiceCollection.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
     res.status(200).send({
       success: true,
-      message: "Services retrieved Successfully",
+      message: "Services retrieved successfully",
+      currentPage: page,
+      totalPages,
+      totalServices,
       data: services,
     });
   } catch (error) {
